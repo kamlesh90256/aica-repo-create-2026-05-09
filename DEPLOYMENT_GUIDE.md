@@ -12,6 +12,28 @@ This guide walks through deploying the NovaMind AI chatbot to production using V
 - [Supabase](https://supabase.com) account for PostgreSQL (free tier: 500 MB storage)
 - Environment variables ready (API keys, secrets, etc.)
 
+### Required Environment Variables
+
+The app reads the following variables at runtime:
+
+#### Backend
+
+- `DATABASE_URL` - PostgreSQL connection string
+- `JWT_SECRET` - Secret used to sign auth tokens
+- `OPENAI_API_KEY` - OpenAI API key for chat and embeddings
+- `OPENAI_MODEL` - Optional model override, defaults to `gpt-4o-mini`
+- `CORS_ORIGIN` - Allowed frontend origin, defaults to `http://localhost:3000`
+- `STRIPE_SECRET_KEY` - Stripe secret key for billing
+- `STRIPE_WEBHOOK_SECRET` - Stripe webhook signing secret
+- `STRIPE_PRICE_STARTER` - Stripe price ID for Starter plan
+- `STRIPE_PRICE_PRO` - Stripe price ID for Pro plan
+- `STRIPE_PRICE_ENTERPRISE` - Stripe price ID for Enterprise plan
+- `PORT` - Backend port, defaults to `4000`
+
+#### Frontend
+
+- `NEXT_PUBLIC_API_URL` - Public backend URL, for example `https://kky-chatbot-backend.onrender.com`
+
 ---
 
 ## 🚀 Step 1: Deploy Database (Supabase PostgreSQL)
@@ -84,14 +106,16 @@ Click **Environment** and add:
 
 ```env
 NODE_ENV=production
-DATABASE_URL=postgresql://...   # From Supabase (Step 1.2)
+DATABASE_URL=postgresql://...      # From Supabase (Step 1.2)
 JWT_SECRET=your-random-secret-key-here-min-32-chars
-OPENAI_API_KEY=sk_...            # From OpenAI dashboard
-STRIPE_SECRET_KEY=sk_live_...    # From Stripe dashboard
-STRIPE_WEBHOOK_SECRET=whsec_...  # From Stripe webhook settings
-STRIPE_PRICE_STARTER=price_...   # From Stripe dashboard
-STRIPE_PRICE_PRO=price_...       # From Stripe dashboard
-STRIPE_PRICE_ENTERPRISE=price_... # From Stripe dashboard
+OPENAI_API_KEY=sk_...              # From OpenAI dashboard
+OPENAI_MODEL=gpt-4o-mini           # Optional
+CORS_ORIGIN=https://kky-chatbot-saas.vercel.app
+STRIPE_SECRET_KEY=sk_live_...      # From Stripe dashboard
+STRIPE_WEBHOOK_SECRET=whsec_...    # From Stripe webhook settings
+STRIPE_PRICE_STARTER=price_...     # From Stripe dashboard
+STRIPE_PRICE_PRO=price_...         # From Stripe dashboard
+STRIPE_PRICE_ENTERPRISE=price_...  # From Stripe dashboard
 PORT=4000
 ```
 
@@ -118,6 +142,14 @@ Now that we have the Render backend URL:
    NEXT_PUBLIC_API_URL=https://kky-chatbot-backend.onrender.com
    ```
 3. Vercel will auto-redeploy
+
+### 4.2 Frontend Environment Summary
+
+The frontend only needs one public variable:
+
+```env
+NEXT_PUBLIC_API_URL=https://kky-chatbot-backend.onrender.com
+```
 
 ---
 
