@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: kky-chatbot-backend
+    runtime: node
+    plan: free
+    buildCommand: cd backend && npm install && npm run build
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: DATABASE_URL
+        value: ""
+        sync: false
+      - key: JWT_SECRET
+        value: ""
+        sync: false
+      - key: OPENAI_API_KEY
+        value: ""
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        value: ""
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        value: ""
+        sync: false
+      - key: STRIPE_PRICE_STARTER
+        value: price_starter
+        sync: false
+      - key: STRIPE_PRICE_PRO
+        value: price_pro
+        sync: false
+      - key: STRIPE_PRICE_ENTERPRISE
+        value: price_enterprise
+        sync: false

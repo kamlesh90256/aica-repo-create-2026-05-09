@@ -1,0 +1,11 @@
+backend
+k8s
+.github
+docker-compose.yml
+Dockerfile
+Dockerfile.dev
+*.md
+.git
+node_modules
+.env*
+.env.local
