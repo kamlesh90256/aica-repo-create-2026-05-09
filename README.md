@@ -2,7 +2,7 @@
 
 A production-ready, enterprise-grade AI chatbot platform built with modern TypeScript, Next.js, and Node.js. NovaMind AI provides real-time streaming conversations, multi-user support, subscription management, and comprehensive API integrations.
 
-**Repository:** [github.com/kamlesh90256/aica-repo-create-2026-05-09](https://github.com/kamlesh90256/aica-repo-create-2026-05-09)
+**Repository:** [github.com/kamlesh90256/KKY-chatbot-saas](https://github.com/kamlesh90256/KKY-chatbot-saas)
 
 ---
 
@@ -75,8 +75,8 @@ NovaMind AI is a fully-featured SaaS platform enabling organizations to integrat
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/kamlesh90256/aica-repo-create-2026-05-09.git
-   cd aica-repo-create-2026-05-09
+   git clone https://github.com/kamlesh90256/KKY-chatbot-saas.git
+   cd KKY-chatbot-saas
    ```
 
 2. **Install dependencies:**
@@ -219,7 +219,7 @@ Contributions are welcome! To contribute:
 
 ## 📧 Support
 
-For issues, questions, or feature requests, please [open an issue](https://github.com/kamlesh90256/aica-repo-create-2026-05-09/issues) on GitHub.
+For issues, questions, or feature requests, please [open an issue](https://github.com/kamlesh90256/KKY-chatbot-saas/issues) on GitHub.
 
 ---
 
