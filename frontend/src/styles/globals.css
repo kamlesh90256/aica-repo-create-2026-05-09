@@ -2,6 +2,81 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, #__next {
-  height: 100%;
+:root {
+  --bg: #0a0a11;
+  --bg-elev: #11111a;
+  --text: #f8fafc;
+  --muted: #9ca3af;
+  --brand: #7c3aed;
+  --brand-2: #2563eb;
+  --card: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.16);
+}
+
+.light {
+  --bg: #f3f5ff;
+  --bg-elev: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --brand: #6d28d9;
+  --brand-2: #1d4ed8;
+  --card: rgba(255, 255, 255, 0.8);
+  --border: rgba(15, 23, 42, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(1200px 700px at -15% -20%, rgba(124, 58, 237, 0.35), transparent 60%),
+    radial-gradient(1000px 600px at 115% 10%, rgba(37, 99, 235, 0.3), transparent 55%),
+    var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", "Inter", sans-serif;
+}
+
+.glass {
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+}
+
+.gradient-text {
+  background: linear-gradient(100deg, #a78bfa 0%, #60a5fa 48%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.animated-border {
+  position: relative;
+}
+
+.animated-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(120deg, rgba(167, 139, 250, 0.65), rgba(56, 189, 248, 0.65), rgba(124, 58, 237, 0.65));
+  z-index: -1;
+  filter: blur(14px);
+  opacity: 0.65;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.float {
+  animation: float 7s ease-in-out infinite;
 }

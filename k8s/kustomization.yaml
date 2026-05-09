@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: default
+
+resources:
+  - db-secrets.yaml
+  - postgres-deployment.yaml
+  - secrets.yaml
+  - backend-deployment.yaml
+  - backend-service.yaml
+  - frontend-deployment.yaml
+  - frontend-service.yaml
+  - ingress.yaml
+
+commonLabels:
+  app.kubernetes.io/name: aica
+  app.kubernetes.io/version: "1.0"
+  app.kubernetes.io/managed-by: kustomize
+
+replicas:
+  - name: aica-backend
+    count: 2
+  - name: aica-frontend
+    count: 2

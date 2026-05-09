@@ -1,9 +1,10 @@
 import Stripe from 'stripe';
 import { PrismaClient } from '@prisma/client';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+const stripeKey = process.env.STRIPE_SECRET_KEY;
+const stripe = stripeKey ? new Stripe(stripeKey, {
   apiVersion: '2024-04-10' as any
-});
+}) : null;
 
 const prisma = new PrismaClient();
 
@@ -17,6 +18,8 @@ type SubscriptionLike = {
 };
 
 export async function createCheckoutSession(userId: string, planId: string, domain: string) {
+  if (!stripe) throw new Error('Stripe is not configured. Set STRIPE_SECRET_KEY environment variable.');
+
   const plans: Record<string, { priceId: string; name: string; price: number }> = {
     starter: {
       priceId: process.env.STRIPE_PRICE_STARTER || 'price_starter',
@@ -61,6 +64,7 @@ export async function createCheckoutSession(userId: string, planId: string, doma
 }
 
 export async function handleCheckoutSessionCompleted(sessionId: string) {
+  if (!stripe) throw new Error('Stripe is not configured. Set STRIPE_SECRET_KEY environment variable.');
   const session = await stripe.checkout.sessions.retrieve(sessionId);
   const userId = session.client_reference_id || session.metadata?.userId;
 
@@ -90,6 +94,7 @@ export async function handleCheckoutSessionCompleted(sessionId: string) {
 }
 
 export async function handleSubscriptionUpdated(subscriptionId: string) {
+  if (!stripe) throw new Error('Stripe is not configured. Set STRIPE_SECRET_KEY environment variable.');
   const subscription = await stripe.subscriptions.retrieve(subscriptionId) as unknown as SubscriptionLike;
   const userId = subscription.metadata?.userId;
 
@@ -106,6 +111,7 @@ export async function handleSubscriptionUpdated(subscriptionId: string) {
 }
 
 export async function handleSubscriptionDeleted(subscriptionId: string) {
+  if (!stripe) throw new Error('Stripe is not configured. Set STRIPE_SECRET_KEY environment variable.');
   await prisma.subscription.updateMany({
     where: { stripeSubscriptionId: subscriptionId },
     data: { status: 'canceled' }
