@@ -103,7 +103,32 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ---
 
-## 🗄️ Step 5: Run Database Migrations
+## 🌐 Step 5: Open Domain Deployment (Optional)
+
+Use this if you want production URLs on your own domain.
+
+### 5.1 Frontend Domain on Vercel
+1. [ ] Go to Vercel → Project → **Settings** → **Domains**
+2. [ ] Add `yourdomain.com` and/or `www.yourdomain.com`
+3. [ ] Add the DNS records Vercel gives you
+4. [ ] Set the primary domain in Vercel
+
+### 5.2 Backend Domain on Render
+1. [ ] Go to Render → Web Service → **Settings** → **Custom Domains**
+2. [ ] Add `api.yourdomain.com`
+3. [ ] Add the DNS record Render provides
+4. [ ] Wait for SSL to be issued automatically
+
+### 5.3 Update Environment Variables
+1. [ ] Set frontend Vercel env var:
+   - `NEXT_PUBLIC_API_URL=https://api.yourdomain.com`
+2. [ ] Set backend Render env var:
+   - `CORS_ORIGIN=https://yourdomain.com`
+3. [ ] Redeploy both services
+
+---
+
+## 🗄️ Step 6: Run Database Migrations
 
 1. [ ] From your local machine:
 ```bash
@@ -116,7 +141,7 @@ npx prisma generate
 
 ---
 
-## 🔐 Step 6: Configure Stripe Webhooks (If using payments)
+## 🔐 Step 7: Configure Stripe Webhooks (If using payments)
 
 1. [ ] Go to https://dashboard.stripe.com
 2. [ ] **Developers** → **Webhooks** → **Add Endpoint**
@@ -131,7 +156,7 @@ npx prisma generate
 
 ---
 
-## ✅ Step 7: Verify Deployment
+## ✅ Step 8: Verify Deployment
 
 ### Test Frontend
 ```bash

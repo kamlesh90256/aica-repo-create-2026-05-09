@@ -175,17 +175,52 @@ If using payments:
 
 ---
 
-## 🌐 Step 6: Setup Custom Domain (Optional)
+## 🌐 Step 6: Open Domain Deployment (Optional)
 
-### Vercel Frontend
-1. **Settings** → **Domains**
-2. Add your domain: `app.yourdomain.com`
-3. Update DNS records as instructed
+If you want the app live on your own domain, use a public frontend domain and a separate API subdomain:
 
-### Render Backend
-1. **Settings** → **Custom Domain**
-2. Add: `api.yourdomain.com`
-3. Update DNS records
+- Frontend: `yourdomain.com` or `www.yourdomain.com`
+- Backend API: `api.yourdomain.com`
+
+### 6.1 Vercel Frontend Domain
+1. Open **Vercel Dashboard** → **Project** → **Settings** → **Domains**
+2. Add your domain, for example:
+   - `yourdomain.com`
+   - `www.yourdomain.com`
+3. Add the DNS record Vercel shows you at your DNS provider:
+   - For `www.yourdomain.com`, use a `CNAME` to `cname.vercel-dns.com`
+   - For the apex domain `yourdomain.com`, use the `A` record Vercel provides
+4. Set the primary domain in Vercel so one address redirects to the other
+5. Update `NEXT_PUBLIC_API_URL` to your backend domain after step 6.2
+
+### 6.2 Render Backend Domain
+1. Open **Render Dashboard** → **Web Service** → **Settings** → **Custom Domains**
+2. Add `api.yourdomain.com`
+3. Add the DNS record Render shows you at your DNS provider
+   - Usually a `CNAME` pointing to your Render service hostname
+4. Wait for Render to verify and issue SSL automatically
+5. Update `CORS_ORIGIN` in Render env vars to your final frontend domain, for example:
+   - `https://yourdomain.com`
+   - `https://www.yourdomain.com`
+
+### 6.3 Final Domain Mapping
+Recommended setup:
+
+- Frontend: `https://yourdomain.com`
+- Backend API: `https://api.yourdomain.com`
+- Frontend env var:
+  ```env
+  NEXT_PUBLIC_API_URL=https://api.yourdomain.com
+  ```
+- Backend env var:
+  ```env
+  CORS_ORIGIN=https://yourdomain.com
+  ```
+
+### 6.4 Verify SSL and Routing
+1. Visit `https://yourdomain.com`
+2. Visit `https://api.yourdomain.com/api/health`
+3. If either domain fails, re-check DNS propagation and the values in Vercel/Render
 
 ---
 
@@ -193,19 +228,19 @@ If using payments:
 
 ### Test Frontend
 ```bash
-curl https://kky-chatbot-saas.vercel.app
+curl https://yourdomain.com
 ```
 Should return 200 OK
 
 ### Test Backend Health
 ```bash
-curl https://kky-chatbot-backend.onrender.com/api/health
+curl https://api.yourdomain.com/api/health
 ```
 Should return `{ "status": "ok" }`
 
 ### Test Chat Endpoint
 ```bash
-curl -X POST https://kky-chatbot-backend.onrender.com/api/chat/stream \
+curl -X POST https://api.yourdomain.com/api/chat/stream \
   -H "Content-Type: application/json" \
   -d '{ "message": "Hello" }'
 ```
