@@ -7,6 +7,15 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
 
 const prisma = new PrismaClient();
 
+type SubscriptionLike = {
+  id: string;
+  items: { data: { price: { id: string } }[] };
+  status: string;
+  current_period_start: number;
+  current_period_end: number;
+  metadata?: { userId?: string };
+};
+
 export async function createCheckoutSession(userId: string, planId: string, domain: string) {
   const plans: Record<string, { priceId: string; name: string; price: number }> = {
     starter: {
@@ -57,7 +66,7 @@ export async function handleCheckoutSessionCompleted(sessionId: string) {
 
   if (!userId) throw new Error('No user ID in session');
 
-  const subscription = await stripe.subscriptions.retrieve(session.subscription as string) as any;
+  const subscription = await stripe.subscriptions.retrieve(session.subscription as string) as unknown as SubscriptionLike;
 
   // Create or update subscription in DB
   await prisma.subscription.upsert({
@@ -81,7 +90,7 @@ export async function handleCheckoutSessionCompleted(sessionId: string) {
 }
 
 export async function handleSubscriptionUpdated(subscriptionId: string) {
-  const subscription = await stripe.subscriptions.retrieve(subscriptionId) as any;
+  const subscription = await stripe.subscriptions.retrieve(subscriptionId) as unknown as SubscriptionLike;
   const userId = subscription.metadata?.userId;
 
   if (!userId) return;
